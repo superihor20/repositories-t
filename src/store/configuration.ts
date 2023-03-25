@@ -4,7 +4,7 @@ import { repositoriesReducer } from './repositories';
 
 export const store = configureStore({
   reducer: {
-    repositories: repositoriesReducer,
+    repositoriesState: repositoriesReducer,
   },
 });
 
