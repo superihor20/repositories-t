@@ -10,12 +10,14 @@ export type RepositoriesState = {
   repositories: Repositories;
   page: number;
   searchValue: string;
+  total: number;
 };
 
 const initialState: RepositoriesState = {
   repositories: [],
   page: 1,
   searchValue: '',
+  total: 0,
 };
 
 export const repositoriesSlice = createSlice({
@@ -30,9 +32,13 @@ export const repositoriesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getRepositories.fulfilled, (state, action: PayloadAction<Repositories>) => {
-      state.repositories = action.payload;
-    });
+    builder.addCase(
+      getRepositories.fulfilled,
+      (state, action: PayloadAction<{ items: Repositories; total: number }>) => {
+        state.repositories = action.payload.items;
+        state.total = action.payload.total;
+      },
+    );
     builder.addCase(getRepositories.rejected, (state) => {
       state.repositories = [];
     });

@@ -9,6 +9,6 @@ export const getRepositories = createAsyncThunk(
   async (input: RepositoriesInput) => {
     const response = await repositoryApi.getRepositories(input);
 
-    return response.items;
+    return { items: response.items, total: response.total_count };
   },
 );

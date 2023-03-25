@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { setSearchValue } from '../../store/repositories';
+import { setPage, setSearchValue } from '../../store/repositories';
 import { getRepositories } from '../../store/repositories/get-repositories.thunk';
 
 import classes from './search.module.scss';
@@ -13,7 +13,10 @@ export const Search = () => {
   const searchValue = useAppSelector(({ repositoriesState: { searchValue } }) => searchValue);
 
   const debouncedRequest = useCallback(
-    debounce((name: string) => dispatch(getRepositories({ name, page: 1 })), 500),
+    debounce((name: string) => {
+      dispatch(setPage(1));
+      dispatch(getRepositories({ name, page: 1 }));
+    }, 500),
     [],
   );
 
