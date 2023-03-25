@@ -1,4 +1,4 @@
-# Create .env file or copy paste from .env.example
+# Create .env file and copy paste variables from .env.example
 
 ## Available Scripts
 
