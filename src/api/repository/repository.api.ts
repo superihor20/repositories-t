@@ -12,10 +12,7 @@ class RepositoryApi {
     this.#requestInstance = axiosInstance;
   }
 
-  getRepositoriesByName = async ({
-    name,
-    page,
-  }: RepositoriesInput): Promise<RepositoriesResponse> => {
+  getRepositories = async ({ name, page }: RepositoriesInput): Promise<RepositoriesResponse> => {
     return this.#requestInstance.get(
       `${endpoints.repositories}?q=${name}&per_page=20&page=${page}`,
     );

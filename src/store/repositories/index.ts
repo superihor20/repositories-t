@@ -2,41 +2,43 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { Repositories } from '../../api/repository/repository.schema';
 
-import { getRepositoriesByName } from './get-repositories.thunk';
+import { getRepositories } from './get-repositories.thunk';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type RepositoriesState = {
   repositories: Repositories;
   page: number;
+  searchValue: string;
 };
 
 const initialState: RepositoriesState = {
   repositories: [],
   page: 1,
+  searchValue: '',
 };
 
 export const repositoriesSlice = createSlice({
   name: 'repositories',
   initialState,
   reducers: {
-    nextPage: (state) => {
-      state.page++;
+    setSearchValue: (state, action: PayloadAction<string>) => {
+      state.searchValue = action.payload;
     },
-    prevPage: (state) => {
-      state.page = Math.max(1, state.page - 1);
+    setPage: (state, action: PayloadAction<number>) => {
+      state.page = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      getRepositoriesByName.fulfilled,
-      (state, action: PayloadAction<Repositories>) => {
-        state.repositories = action.payload;
-      },
-    );
+    builder.addCase(getRepositories.fulfilled, (state, action: PayloadAction<Repositories>) => {
+      state.repositories = action.payload;
+    });
+    builder.addCase(getRepositories.rejected, (state) => {
+      state.repositories = [];
+    });
   },
 });
 
-export const { nextPage, prevPage } = repositoriesSlice.actions;
+export const { setPage, setSearchValue } = repositoriesSlice.actions;
 
 export const repositoriesReducer = repositoriesSlice.reducer;

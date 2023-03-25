@@ -1,29 +1,31 @@
 import debounce from 'lodash.debounce';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { getRepositoriesByName } from '../../store/repositories/get-repositories.thunk';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { setSearchValue } from '../../store/repositories';
+import { getRepositories } from '../../store/repositories/get-repositories.thunk';
 
 import classes from './search.module.scss';
 
 export const Search = () => {
   const dispatch = useAppDispatch();
-  const [searchValue, setSearchValue] = useState('');
+  const searchValue = useAppSelector(({ repositoriesState: { searchValue } }) => searchValue);
 
   const debouncedRequest = useCallback(
-    debounce((name: string) => dispatch(getRepositoriesByName({ name, page: 1 })), 500),
+    debounce((name: string) => dispatch(getRepositories({ name, page: 1 })), 500),
     [],
   );
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    setSearchValue(value);
+    dispatch(setSearchValue(value));
     debouncedRequest(value);
   };
 
   useEffect(() => {
-    dispatch(getRepositoriesByName({ name: 'react', page: 1 }));
+    dispatch(getRepositories({ name: 'react', page: 1 }));
   }, []);
 
   return (

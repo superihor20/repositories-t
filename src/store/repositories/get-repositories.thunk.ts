@@ -4,10 +4,10 @@ import { repositoryApi } from '../../api/repository/repository.api';
 import { RepositoriesInput } from '../../api/repository/repository.schema';
 import { endpoints } from '../../utils/constants/endpoints';
 
-export const getRepositoriesByName = createAsyncThunk(
+export const getRepositories = createAsyncThunk(
   endpoints.repositories,
   async (input: RepositoriesInput) => {
-    const response = await repositoryApi.getRepositoriesByName(input);
+    const response = await repositoryApi.getRepositories(input);
 
     return response.items;
   },

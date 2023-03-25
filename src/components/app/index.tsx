@@ -1,3 +1,4 @@
+import { Pagination } from '../pagination';
 import { Repositories } from '../repositories';
 import { Search } from '../search';
 
@@ -8,6 +9,7 @@ export const App = () => {
     <div className={classes['app-wrapper']}>
       <Search />
       <Repositories />
+      <Pagination />
     </div>
   );
 };
