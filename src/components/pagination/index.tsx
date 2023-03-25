@@ -2,6 +2,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { setPage } from '../../store/repositories';
 import { getRepositories } from '../../store/repositories/get-repositories.thunk';
+import { getPage, getSearchValue, getTotal } from '../../store/repositories/repository.selectors';
 
 import { Button } from './components/button';
 import classes from './pagination.module.scss';
@@ -12,9 +13,9 @@ const lastPageForCount = maxPage - numberOfAvailablePages;
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
-  const name = useAppSelector(({ repositoriesState: { searchValue } }) => searchValue);
-  const currentPage = useAppSelector(({ repositoriesState: { page } }) => page);
-  const total = useAppSelector(({ repositoriesState: { total } }) => total);
+  const name = useAppSelector(getSearchValue);
+  const currentPage = useAppSelector(getPage);
+  const total = useAppSelector(getTotal);
   const lastPage = Math.min(maxPage, Math.floor(total / 20));
   const availablePages = Array.from(Array(numberOfAvailablePages)).map((item, index) =>
     currentPage > lastPageForCount ? lastPageForCount + index + 1 : currentPage + index,

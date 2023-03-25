@@ -5,12 +5,13 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { setPage, setSearchValue } from '../../store/repositories';
 import { getRepositories } from '../../store/repositories/get-repositories.thunk';
+import { getSearchValue } from '../../store/repositories/repository.selectors';
 
 import classes from './search.module.scss';
 
 export const Search = () => {
   const dispatch = useAppDispatch();
-  const searchValue = useAppSelector(({ repositoriesState: { searchValue } }) => searchValue);
+  const searchValue = useAppSelector(getSearchValue);
 
   const debouncedRequest = useCallback(
     debounce((name: string) => {

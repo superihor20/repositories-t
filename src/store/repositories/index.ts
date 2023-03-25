@@ -44,7 +44,6 @@ export const repositoriesSlice = createSlice({
     });
   },
 });
-
 export const { setPage, setSearchValue } = repositoriesSlice.actions;
 
 export const repositoriesReducer = repositoriesSlice.reducer;
