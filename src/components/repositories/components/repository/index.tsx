@@ -24,7 +24,7 @@ export const Repository: React.FC<RepositoryProps> = ({ repository }) => {
         <div className={classes['info-right']}>
           <div className={classes['info-stat']}>
             <img src={star} alt="star" />
-            <span className={classes['heading-text']}>{repository.score} stars</span>
+            <span className={classes['heading-text']}>{repository.stargazers_count} stars</span>
           </div>
           <div className={classes['info-stat']}>
             <img src={watcher} alt="watcher" />
