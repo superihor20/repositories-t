@@ -13,31 +13,30 @@ const lastPageForCount = maxPage - numberOfAvailablePages;
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
-  const name = useAppSelector(getSearchValue);
+  const name = useAppSelector(getSearchValue) || 'react';
   const currentPage = useAppSelector(getPage);
   const total = useAppSelector(getTotal);
+
   const lastPage = Math.min(maxPage, Math.floor(total / 20));
   const availablePages = Array.from(Array(numberOfAvailablePages)).map((item, index) =>
     currentPage > lastPageForCount ? lastPageForCount + index + 1 : currentPage + index,
   );
 
-  const handleNextPage = () => {
-    const nextPage = currentPage + 1;
+  const chandleChangePage = (newPage: number) => {
+    dispatch(setPage(newPage));
+    dispatch(getRepositories({ name, page: newPage }));
+  };
 
-    dispatch(setPage(nextPage));
-    dispatch(getRepositories({ name: name || 'react', page: nextPage }));
+  const handleNextPage = () => {
+    const nextPage = Math.min(currentPage + 1, lastPage);
+
+    chandleChangePage(nextPage);
   };
 
   const handlePreviosPage = () => {
     const prevPage = Math.max(1, currentPage - 1);
 
-    dispatch(setPage(prevPage));
-    dispatch(getRepositories({ name: name || 'react', page: prevPage }));
-  };
-
-  const handlePage = (selectedPage: number) => {
-    dispatch(setPage(selectedPage));
-    dispatch(getRepositories({ name: name || 'react', page: selectedPage }));
+    chandleChangePage(prevPage);
   };
 
   return (
@@ -45,13 +44,13 @@ export const Pagination = () => {
       <Button onClick={handlePreviosPage}>Previos</Button>
       {currentPage > numberOfAvailablePages && (
         <>
-          <Button onClick={() => handlePage(1)}>1</Button> ...
+          <Button onClick={() => chandleChangePage(1)}>1</Button> ...
         </>
       )}
       {availablePages.map((availablePage) => (
         <Button
           key={availablePage}
-          onClick={() => handlePage(availablePage)}
+          onClick={() => chandleChangePage(availablePage)}
           isActive={availablePage === currentPage}
         >
           {availablePage}
@@ -59,7 +58,7 @@ export const Pagination = () => {
       ))}
       {currentPage <= lastPage - numberOfAvailablePages && (
         <>
-          ... <Button onClick={() => handlePage(lastPage)}>{lastPage}</Button>
+          ... <Button onClick={() => chandleChangePage(lastPage)}>{lastPage}</Button>
         </>
       )}
       <Button onClick={handleNextPage}>Next</Button>
